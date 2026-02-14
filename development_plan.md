@@ -22,7 +22,7 @@ This plan outlines the roadmap for building DCABot from scratch. We will priorit
 
 ## 🔐 Phase 2: Web3 Auth & User Data
 **Goal:** Allow users to connect wallets and persist their identity.
-- [ ] **2.1 Convex Setup:** Initialize Convex project and set up the schema.
+- [x] **2.1 Convex Setup:** Initialize Convex project and set up the schema.
 - [ ] **2.2 Wallet Connection:** Implement "Connect Wallet" using `@onelabs/dapp-kit`.
 - [ ] **2.3 User Authentication:** Create a Convex mutation to authenticate/create users based on Wallet Address.
 - [ ] **2.4 User Profile:** Create a schema for storing user preferences and settings.
