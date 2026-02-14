@@ -2,6 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Wallet, TrendingUp, History } from "lucide-react";
 
+import { WalletConnect } from "@/components/WalletConnect";
+
 export default function Dashboard() {
     return (
         <div className="flex min-h-screen flex-col bg-background">
@@ -9,8 +11,7 @@ export default function Dashboard() {
                 <div className="container flex h-16 items-center justify-between px-4">
                     <div className="font-bold text-lg">DCABot</div>
                     <div className="flex items-center gap-4">
-                        <span className="text-sm text-muted-foreground">Not Connected</span>
-                        <Button variant="outline" size="sm">Connect Wallet</Button>
+                        <WalletConnect />
                     </div>
                 </div>
             </header>

@@ -10,6 +10,12 @@ export default defineSchema({
         role: v.string(), // "user" | "admin"
         lastSignedIn: v.number(),
         createdAt: v.number(),
+        preferences: v.optional(v.object({
+            theme: v.optional(v.string()),
+            language: v.optional(v.string()),
+            notifications: v.optional(v.boolean()),
+            timezone: v.optional(v.string()),
+        })),
     }).index("by_walletAddress", ["walletAddress"]),
 
     // Investment schedules

@@ -9,6 +9,7 @@
  */
 
 import type * as schema_constants from "../schema/constants.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -18,6 +19,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "schema/constants": typeof schema_constants;
+  users: typeof users;
 }>;
 
 /**

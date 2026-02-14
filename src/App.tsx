@@ -2,7 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 
+import { useAuth } from "@/hooks/useAuth";
+
 function App() {
+  useAuth(); // Handle wallet authentication
+
   return (
     <BrowserRouter>
       <Routes>
