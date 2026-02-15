@@ -1,8 +1,4 @@
-import { cn } from "@/lib/utils";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Check, X, Bot, User } from "lucide-react";
+import { Bot, User } from "lucide-react";
 
 interface MessageBubbleProps {
     role: "user" | "assistant";
@@ -11,65 +7,45 @@ interface MessageBubbleProps {
         type: string;
         data: any;
     };
-    onConfirm?: () => void;
-    onCancel?: () => void;
 }
 
-export function MessageBubble({ role, content, intent, onConfirm, onCancel }: MessageBubbleProps) {
+export function MessageBubble({ role, content, intent }: MessageBubbleProps) {
     const isAi = role === "assistant";
 
-    return (
-        <div className={cn("flex w-full mb-4", isAi ? "justify-start" : "justify-end")}>
-            <div className={cn("flex max-w-[80%] md:max-w-[70%] gap-3", isAi ? "flex-row" : "flex-row-reverse")}>
-                {/* Avatar */}
-                <div className="flex-shrink-0 mt-1">
-                    <div className={cn(
-                        "h-8 w-8 rounded-full flex items-center justify-center",
-                        isAi ? "bg-primary text-primary-foreground" : "bg-muted"
-                    )}>
-                        {isAi ? <Bot size={18} /> : <User size={18} />}
-                    </div>
+    if (isAi) {
+        return (
+            <div className="flex gap-4 max-w-2xl animate-fade-in group">
+                <div className="w-8 h-8 rounded-sm bg-surface-zinc border border-white/10 flex items-center justify-center flex-shrink-0 mt-1">
+                    <Bot className="h-4 w-4 text-silver-accent" />
                 </div>
-
-                {/* Message Content */}
-                <div className="flex flex-col gap-2">
-                    <div className={cn(
-                        "rounded-2xl px-4 py-3 text-sm",
-                        isAi
-                            ? "bg-muted text-foreground rounded-tl-sm"
-                            : "bg-primary text-primary-foreground rounded-tr-sm"
-                    )}>
+                <div className="space-y-2 w-full">
+                    <div className="text-[10px] font-mono text-silver-dim uppercase tracking-wider mb-1">Monolith Agent v2.4</div>
+                    <p className="text-sm text-silver-accent leading-relaxed font-light">
                         {content}
-                    </div>
+                    </p>
 
-                    {/* Intent Confirmation Card */}
-                    {isAi && intent?.type === "confirm_investment" && (
-                        <Card className="w-full bg-card border-border/50 animate-in fade-in slide-in-from-top-2">
-                            <CardHeader className="pb-2">
-                                <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                                    Confirm Schedule
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="pb-3 text-sm">
-                                <div className="grid grid-cols-2 gap-2">
-                                    <div className="text-muted-foreground">Token:</div>
-                                    <div className="font-bold">{intent.data.token}</div>
-                                    <div className="text-muted-foreground">Amount:</div>
-                                    <div className="font-bold">${intent.data.amount}</div>
-                                    <div className="text-muted-foreground">Frequency:</div>
-                                    <div className="font-bold capitalize">{intent.data.frequency}</div>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex gap-2 pt-0">
-                                <Button size="sm" variant="default" className="w-full" onClick={onConfirm}>
-                                    <Check className="mr-2 h-4 w-4" /> Confirm
-                                </Button>
-                                <Button size="sm" variant="outline" className="w-full" onClick={onCancel}>
-                                    <X className="mr-2 h-4 w-4" /> Cancel
-                                </Button>
-                            </CardFooter>
-                        </Card>
+                    {/* Placeholder for visual blocks if intent warrants it, matching the design's "Processing Strategy" box */}
+                    {intent && (
+                        <div className="mt-2 text-xs text-active-green font-mono border border-active-green/20 bg-active-green-dim px-3 py-2 rounded-sm inline-block">
+                            Intent Detected: {intent.type}
+                        </div>
                     )}
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex gap-4 max-w-2xl ml-auto flex-row-reverse group">
+            <div className="w-8 h-8 rounded-sm bg-white text-black flex items-center justify-center flex-shrink-0 mt-1">
+                <User className="h-4 w-4 text-black" />
+            </div>
+            <div className="space-y-2 text-right">
+                <div className="text-[10px] font-mono text-silver-dim uppercase tracking-wider mb-1">User Command</div>
+                <div className="inline-block text-left bg-surface-panel border border-white/10 p-4 rounded-sm rounded-tr-none">
+                    <p className="text-sm text-white leading-relaxed">
+                        {content}
+                    </p>
                 </div>
             </div>
         </div>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Immersive Agent Command Center</title>
+<meta content="Premium Web3 AI Agent terminal for autonomous on-chain execution." name="description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-black": "#050505",
+              "surface-zinc": "#0A0A0A",
+              "surface-panel": "#0F0F0F",
+              "silver-accent": "#E0E0E0",
+              "silver-dim": "#555555",
+              "silver-dark": "#333333",
+              "border-subtle": "#222222",
+              "active-green": "#00FF94",
+              "active-green-dim": "rgba(0, 255, 148, 0.1)",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "sans": ["Inter", "sans-serif"],
+              "mono": ["JetBrains Mono", "monospace"],
+            },
+            backgroundImage: {
+                'grid-pattern': "linear-gradient(to right, #111 1px, transparent 1px), linear-gradient(to bottom, #111 1px, transparent 1px)",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .message-bubble {
+            position: relative;
+        }
+        .message-bubble::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -1px;
+            width: 2px;
+            height: 100%;
+            background: var(--tw-gradient-from, #333);
+        }
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 3s ease-out forwards;
+        }
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 50;
+        }::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0A0A0A; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+    </style>
+</head>
+<body class="bg-surface-black text-white font-sans h-screen w-screen overflow-hidden flex flex-col selection:bg-silver-accent selection:text-black">
+<div class="noise-overlay"></div>
+<div class="absolute inset-0 z-0 bg-grid-pattern bg-[length:40px_40px] opacity-20 pointer-events-none"></div>
+<div class="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-gradient-to-b from-white/5 to-transparent rounded-full blur-[150px] pointer-events-none"></div>
+<div class="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-gradient-to-t from-active-green/5 to-transparent rounded-full blur-[120px] pointer-events-none"></div>
+<nav class="relative z-20 w-full px-8 py-5 border-b border-border-subtle flex justify-between items-center bg-surface-black/80 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-6 bg-white"></div>
+<span class="font-display font-bold tracking-widest text-lg text-white">MONOLITH</span>
+</div>
+<div class="h-4 w-px bg-white/10 mx-2"></div>
+<div class="flex items-center gap-2 px-2 py-1 bg-white/5 rounded border border-white/5">
+<span class="w-1.5 h-1.5 rounded-full bg-active-green animate-pulse"></span>
+<span class="text-[10px] font-mono text-silver-accent tracking-wider uppercase">Agent Active</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-6 text-xs font-display tracking-widest text-silver-dim">
+<span class="hover:text-white cursor-pointer transition-colors">DASHBOARD</span>
+<span class="text-white border-b border-white pb-0.5 cursor-pointer">TERMINAL</span>
+<span class="hover:text-white cursor-pointer transition-colors">ASSETS</span>
+<span class="hover:text-white cursor-pointer transition-colors">SETTINGS</span>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-white/10">
+<div class="text-right">
+<div class="text-[10px] text-silver-dim font-mono">0x84...29A</div>
+<div class="text-xs font-bold text-white font-display">ETH: 24.502</div>
+</div>
+<div class="w-8 h-8 rounded bg-gradient-to-br from-white/10 to-transparent border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">wallet</span>
+</div>
+</div>
+</div>
+</nav>
+<main class="relative z-10 flex-1 w-full flex overflow-hidden">
+<div class="w-full md:w-[55%] flex flex-col border-r border-border-subtle h-full">
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<div class="flex gap-4 max-w-2xl">
+<div class="w-8 h-8 rounded-sm bg-surface-zinc border border-white/10 flex items-center justify-center flex-shrink-0 mt-1">
+<span class="material-symbols-outlined text-xs text-silver-accent">smart_toy</span>
+</div>
+<div class="space-y-2">
+<div class="text-[10px] font-mono text-silver-dim uppercase tracking-wider mb-1">Monolith Agent v2.4</div>
+<p class="text-sm text-silver-accent leading-relaxed font-light">
+                            Systems initialized. Connected to Ethereum Mainnet via private RPC. 
+                            Ready for autonomous execution. What strategy shall we deploy today?
+                        </p>
+</div>
+</div>
+<div class="flex gap-4 max-w-2xl ml-auto flex-row-reverse">
+<div class="w-8 h-8 rounded-sm bg-white text-black flex items-center justify-center flex-shrink-0 mt-1">
+<span class="material-symbols-outlined text-xs font-bold">person</span>
+</div>
+<div class="space-y-2 text-right">
+<div class="text-[10px] font-mono text-silver-dim uppercase tracking-wider mb-1">User Command</div>
+<div class="inline-block text-left bg-surface-panel border border-white/10 p-4 rounded-sm rounded-tr-none">
+<p class="text-sm text-white leading-relaxed">
+                                Set up a recurring buy order. I want to DCA $100 into ETH every week, starting now. 
+                                Prioritize low gas fees and use maximum slippage protection.
+                            </p>
+</div>
+</div>
+</div>
+<div class="flex gap-4 max-w-2xl animate-fade-in">
+<div class="w-8 h-8 rounded-sm bg-surface-zinc border border-white/10 flex items-center justify-center flex-shrink-0 mt-1">
+<span class="material-symbols-outlined text-xs text-active-green">smart_toy</span>
+</div>
+<div class="space-y-4 w-full">
+<div class="text-[10px] font-mono text-silver-dim uppercase tracking-wider mb-1">Monolith Agent v2.4 • <span class="text-active-green">Processing Strategy</span></div>
+<p class="text-sm text-silver-accent leading-relaxed font-light">
+                            Analyzing request parameters. Constructing DCA Strategy #8821.
+                        </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+<div class="bg-surface-zinc/50 border border-white/5 p-3 rounded-sm flex flex-col gap-2 hover:border-white/20 transition-colors group">
+<div class="flex justify-between items-start">
+<svg class="w-5 h-5 text-silver-dim group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+<span class="text-[10px] font-mono text-active-green">SECURE</span>
+</div>
+<div>
+<div class="text-[10px] text-silver-dim uppercase">Protection</div>
+<div class="text-xs text-white">MEV Guard Active</div>
+</div>
+</div>
+<div class="bg-surface-zinc/50 border border-white/5 p-3 rounded-sm flex flex-col gap-2 hover:border-white/20 transition-colors group">
+<div class="flex justify-between items-start">
+<svg class="w-5 h-5 text-silver-dim group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+<span class="text-[10px] font-mono text-active-green">OPTIMIZED</span>
+</div>
+<div>
+<div class="text-[10px] text-silver-dim uppercase">Gas Limit</div>
+<div class="text-xs text-white">&lt; 25 Gwei Target</div>
+</div>
+</div>
+<div class="bg-surface-zinc/50 border border-white/5 p-3 rounded-sm flex flex-col gap-2 hover:border-white/20 transition-colors group">
+<div class="flex justify-between items-start">
+<svg class="w-5 h-5 text-silver-dim group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path></svg>
+<span class="text-[10px] font-mono text-active-green">0.5% MAX</span>
+</div>
+<div>
+<div class="text-[10px] text-silver-dim uppercase">Slippage</div>
+<div class="text-xs text-white">Auto-adjust</div>
+</div>
+</div>
+</div>
+<p class="text-sm text-silver-accent leading-relaxed font-light">
+                            I've drafted the contract execution plan. This will execute a swap of 100 USDC to ETH every 7 days via Uniswap V3 router. Please confirm execution.
+                        </p>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-border-subtle bg-surface-black/50 backdrop-blur-sm">
+<div class="relative">
+<input class="w-full bg-surface-zinc border border-white/10 text-white p-4 pl-4 pr-12 rounded-sm focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all font-light placeholder:text-silver-dim/50 text-sm" placeholder="Confirm execution or modify parameters..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-white/10 rounded-sm transition-colors text-silver-accent hover:text-white">
+<span class="material-symbols-outlined text-lg">arrow_upward</span>
+</button>
+</div>
+<div class="flex justify-between mt-3 px-1">
+<div class="flex gap-4 text-[10px] font-mono text-silver-dim uppercase tracking-wider">
+<span class="flex items-center gap-1.5"><div class="w-1 h-1 bg-active-green rounded-full"></div> Mainnet</span>
+<span class="flex items-center gap-1.5"><div class="w-1 h-1 bg-silver-dim rounded-full"></div> Latency: 12ms</span>
+</div>
+<div class="text-[10px] text-silver-dim font-display tracking-widest">
+                        PRESS ENTER TO SEND
+                    </div>
+</div>
+</div>
+</div>
+<div class="hidden md:block w-[45%] bg-surface-panel/30 p-8 overflow-y-auto">
+<div class="h-full flex flex-col gap-6">
+<div class="flex justify-between items-end pb-4 border-b border-border-subtle">
+<div>
+<div class="text-[10px] font-mono text-active-green mb-1">PREVIEW MODE</div>
+<h2 class="text-2xl font-display font-light text-white">Strategy #8821</h2>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 border border-white/10 text-[10px] uppercase tracking-wider text-silver-accent hover:bg-white/5 transition-colors">Edit</button>
+<button class="px-3 py-1.5 bg-white text-black text-[10px] font-bold uppercase tracking-wider hover:bg-silver-accent transition-colors flex items-center gap-2">
+                             Confirm <span class="material-symbols-outlined text-xs">check</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-px bg-white/5 border border-white/5 rounded-sm overflow-hidden">
+<div class="bg-surface-panel p-4">
+<div class="text-[10px] text-silver-dim uppercase tracking-wider mb-1">Action</div>
+<div class="text-white font-mono text-sm">Recurring Swap</div>
+</div>
+<div class="bg-surface-panel p-4">
+<div class="text-[10px] text-silver-dim uppercase tracking-wider mb-1">Asset Pair</div>
+<div class="text-white font-mono text-sm flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span> USDC
+                            <span class="text-silver-dim">→</span>
+<span class="w-2 h-2 rounded-full bg-purple-500"></span> ETH
+                        </div>
+</div>
+<div class="bg-surface-panel p-4">
+<div class="text-[10px] text-silver-dim uppercase tracking-wider mb-1">Amount</div>
+<div class="text-white font-mono text-sm">$100.00 / week</div>
+</div>
+<div class="bg-surface-panel p-4">
+<div class="bg-active-green-dim border border-active-green/20 px-2 py-0.5 inline-block rounded text-[10px] text-active-green mb-1">ESTIMATED</div>
+<div class="text-white font-mono text-sm">~0.031 ETH</div>
+</div>
+</div>
+<div class="flex-1 bg-surface-black border border-white/5 p-6 rounded-sm relative overflow-hidden group">
+<div class="flex justify-between items-start mb-6">
+<div>
+<div class="text-sm text-white font-display">Projected Accumulation</div>
+<div class="text-[10px] text-silver-dim mt-1">1 Year Outlook based on current volatility</div>
+</div>
+<div class="text-right">
+<div class="text-xl font-display text-white">+5.2 ETH</div>
+<div class="text-[10px] text-active-green">+12.4% APY (Est)</div>
+</div>
+</div>
+<div class="absolute inset-x-0 bottom-0 top-24 px-6 pb-6">
+<svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 400 200">
+<line stroke="#333" stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="400" y1="40" y2="40"></line>
+<line stroke="#333" stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="400" y1="80" y2="80"></line>
+<line stroke="#333" stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="400" y1="120" y2="120"></line>
+<line stroke="#333" stroke-dasharray="4 4" stroke-width="0.5" x1="0" x2="400" y1="160" y2="160"></line>
+<defs>
+<linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#00FF94" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#00FF94" stop-opacity="0"></stop>
+</linearGradient>
+</defs>
+<path d="M0,180 C50,170 100,165 150,150 C200,135 250,140 300,100 C350,60 380,50 400,30 V200 H0 Z" fill="url(#chartGradient)"></path>
+<path class="chart-line" d="M0,180 C50,170 100,165 150,150 C200,135 250,140 300,100 C350,60 380,50 400,30" fill="none" stroke="#00FF94" stroke-width="2"></path>
+<circle class="animate-pulse" cx="400" cy="30" fill="#fff" r="4"></circle>
+</svg>
+</div>
+<div class="absolute bottom-2 left-6 right-6 flex justify-between text-[9px] text-silver-dim font-mono uppercase">
+<span>Now</span>
+<span>Q2</span>
+<span>Q3</span>
+<span>Q4</span>
+<span>Next Year</span>
+</div>
+</div>
+<div class="border-t border-border-subtle pt-4 flex justify-between items-center text-[10px] text-silver-dim font-mono">
+<div>SMART CONTRACT AUDITED</div>
+<div class="flex items-center gap-2">
+<span>GAS: 14 GWEI</span>
+<div class="w-px h-3 bg-white/10"></div>
+<span class="text-white">READY TO SIGN</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 w-full z-20 px-4 py-2 bg-surface-black border-t border-border-subtle flex justify-between items-center">
+<div class="flex gap-6 text-[10px] tracking-wide text-silver-dim font-mono">
+<span class="flex items-center gap-2"><span class="w-1 h-1 rounded-full bg-green-500"></span> SYSTEM OPERATIONAL</span>
+<span class="hidden md:inline">VERSION 2.4.1 (STABLE)</span>
+</div>
+<div class="flex gap-4 text-[10px] font-mono text-silver-dim">
+<span>UPTIME: 99.99%</span>
+<span class="text-white opacity-50">ENCRYPTED CONNECTION</span>
+</div>
+</footer>
+
+</body></html>

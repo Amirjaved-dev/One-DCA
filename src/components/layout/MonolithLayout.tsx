@@ -28,12 +28,15 @@ export const MonolithLayout: React.FC<MonolithLayoutProps> = ({ children }) => {
                         <Link to="/" className="font-display font-bold tracking-widest text-lg text-white">MONOLITH</Link>
                     </div>
                     <div className="hidden md:flex items-center gap-8">
-                        <Link to="#" className="text-xs font-display uppercase tracking-widest text-silver-dim hover:text-white transition-colors">Portfolio</Link>
+                        <Link to="/dashboard" className={cn(
+                            "text-xs font-display uppercase tracking-widest transition-colors",
+                            location.pathname === '/dashboard' ? "text-white border-b border-accent-lime pb-1" : "text-silver-dim hover:text-white"
+                        )}>Portfolio</Link>
                         <Link to="#" className="text-xs font-display uppercase tracking-widest text-silver-dim hover:text-white transition-colors">Strategies</Link>
                         <Link to="/chat" className="text-xs font-display uppercase tracking-widest text-silver-dim hover:text-white transition-colors">Agents</Link>
-                        <Link to="/dashboard" className={cn(
-                            "text-xs font-display uppercase tracking-widest transition-colors pb-1",
-                            location.pathname === '/dashboard' ? "text-white border-b border-accent-lime" : "text-silver-dim hover:text-white"
+                        <Link to="/settings" className={cn(
+                            "text-xs font-display uppercase tracking-widest transition-colors",
+                            location.pathname === '/settings' ? "text-white border-b border-accent-lime pb-1" : "text-silver-dim hover:text-white"
                         )}>Settings</Link>
                     </div>
                 </div>

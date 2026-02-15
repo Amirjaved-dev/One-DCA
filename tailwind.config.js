@@ -9,11 +9,15 @@ export default {
         extend: {
             colors: {
                 "surface-black": "#050505",
-                "surface-zinc": "#111111",
+                "surface-zinc": "#0A0A0A",
+                "surface-panel": "#0F0F0F",
                 "silver-accent": "#E0E0E0",
-                "silver-dim": "#666666",
+                "silver-dim": "#555555",
+                "silver-dark": "#333333",
                 "border-subtle": "#222222",
                 "tech-green": "#00ff41",
+                "active-green": "#00FF94",
+                "active-green-dim": "rgba(0, 255, 148, 0.1)",
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

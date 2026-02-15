@@ -1,11 +1,8 @@
 import { useState, useRef, useEffect } from "react";
-import { useQuery, useMutation, useAction } from "convex/react";
+import { useQuery, useAction } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { MessageBubble } from "./MessageBubble";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Send, Loader2 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Loader2, Bot } from "lucide-react";
 
 interface ChatInterfaceProps {
     userId: string; // We'll pass this in for now
@@ -42,89 +39,92 @@ export function ChatInterface({ userId }: ChatInterfaceProps) {
         }
     };
 
-    const handleConfirm = () => {
-        // Placeholder for confirmation logic
-        console.log("Schedule Confirmed!");
-        // We would likely call another mutation here to actually create the schedule
-    };
 
-    const handleCancel = () => {
-        console.log("Schedule Cancelled!");
-    };
+
+
 
     return (
-        <div className="flex flex-col h-[600px] w-full max-w-2xl mx-auto border rounded-xl overflow-hidden bg-background shadow-lg">
-            {/* Header */}
-            <div className="p-4 border-b bg-muted/30">
-                <h2 className="font-semibold flex items-center gap-2">
-                    <span className="text-xl">🤖</span> DCA Agent
-                </h2>
-                <p className="text-xs text-muted-foreground">Ask me to start investing for you.</p>
+        <>
+            <div className="flex-1 overflow-y-auto p-8 space-y-8">
+                {loadMessages === undefined ? (
+                    <div className="flex justify-center py-8 text-muted-foreground">
+                        <Loader2 className="animate-spin h-6 w-6" />
+                    </div>
+                ) : loadMessages.length === 0 ? (
+                    <div className="flex gap-4 max-w-2xl animate-fade-in">
+                        <div className="w-8 h-8 rounded-sm bg-surface-zinc border border-white/10 flex items-center justify-center flex-shrink-0 mt-1">
+                            <Bot className="h-4 w-4 text-silver-accent" />
+                        </div>
+                        <div className="space-y-4 w-full">
+                            <div className="text-[10px] font-mono text-silver-dim uppercase tracking-wider mb-1">Monolith Agent v2.4</div>
+                            <p className="text-sm text-silver-accent leading-relaxed font-light">
+                                Systems initialized. Connected to Ethereum Mainnet via private RPC.
+                                Ready for autonomous execution. What strategy shall we deploy today?
+                            </p>
+                        </div>
+                    </div>
+                ) : (
+                    loadMessages.map((msg) => (
+                        <MessageBubble
+                            key={msg._id}
+                            role={msg.role as "user" | "assistant"}
+                            content={msg.body}
+                            intent={msg.intent}
+                        />
+                    ))
+                )}
+                {isSending && (
+                    <div className="flex gap-4 max-w-2xl animate-fade-in">
+                        <div className="w-8 h-8 rounded-sm bg-surface-zinc border border-white/10 flex items-center justify-center flex-shrink-0 mt-1">
+                            <Bot className="h-4 w-4 text-active-green" />
+                        </div>
+                        <div className="space-y-4 w-full">
+                            <div className="text-[10px] font-mono text-silver-dim uppercase tracking-wider mb-1">Monolith Agent v2.4 • <span className="text-active-green">Processing Strategy</span></div>
+                            <p className="text-sm text-silver-accent leading-relaxed font-light flex items-center gap-2">
+                                Analyzing request parameters...
+                                <span className="flex gap-1">
+                                    <span className="w-1 h-1 bg-active-green rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                                    <span className="w-1 h-1 bg-active-green rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                                    <span className="w-1 h-1 bg-active-green rounded-full animate-bounce"></span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                )}
+                <div ref={scrollRef} />
             </div>
 
-            {/* Messages Area */}
-            <ScrollArea className="flex-1 p-4">
-                <div className="flex flex-col gap-4">
-                    {loadMessages === undefined ? (
-                        <div className="flex justify-center py-8 text-muted-foreground">
-                            <Loader2 className="animate-spin h-6 w-6" />
-                        </div>
-                    ) : loadMessages.length === 0 ? (
-                        <div className="text-center py-12 text-muted-foreground">
-                            <p>No messages yet.</p>
-                            <p className="text-sm">Try saying "Buy $10 of SUI weekly"</p>
-                        </div>
-                    ) : (
-                        loadMessages.map((msg) => (
-                            <MessageBubble
-                                key={msg._id}
-                                role={msg.role as "user" | "assistant"}
-                                content={msg.body}
-                                intent={msg.intent}
-                                onConfirm={handleConfirm}
-                                onCancel={handleCancel}
-                            />
-                        ))
-                    )}
-                    {isSending && (
-                        <div className="flex w-full mb-4 justify-start">
-                            <div className="flex max-w-[80%] gap-3 flex-row">
-                                <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground">
-                                    <Bot className="h-4 w-4" />
-                                </div>
-                                <div className="bg-muted text-foreground rounded-2xl rounded-tl-sm px-4 py-3 flex items-center">
-                                    <span className="flex gap-1">
-                                        <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                                        <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                                        <span className="w-1.5 h-1.5 bg-current rounded-full animate-bounce"></span>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    <div ref={scrollRef} />
-                </div>
-            </ScrollArea>
-
-            {/* Input Area */}
-            <div className="p-4 border-t bg-background">
-                <div className="flex gap-2">
-                    <Input
+            <div className="p-6 border-t border-border-subtle bg-surface-black/50 backdrop-blur-sm">
+                <div className="relative">
+                    <input
+                        className="w-full bg-surface-zinc border border-white/10 text-white p-4 pl-4 pr-12 rounded-sm focus:ring-1 focus:ring-white/30 focus:border-white/30 transition-all font-light placeholder:text-silver-dim/50 text-sm"
+                        placeholder="Confirm execution or modify parameters..."
+                        type="text"
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                        placeholder="Type a message..."
                         disabled={isSending}
-                        className="flex-1"
                     />
-                    <Button onClick={handleSend} disabled={isSending || !inputValue.trim()} size="icon">
-                        {isSending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                    </Button>
+                    <button
+                        onClick={handleSend}
+                        disabled={isSending || !inputValue.trim()}
+                        className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-white/10 rounded-sm transition-colors text-silver-accent hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {isSending ? <Loader2 className="h-5 w-5 animate-spin" /> : <span className="material-symbols-outlined text-lg">arrow_upward</span>}
+                    </button>
+                </div>
+                <div className="flex justify-between mt-3 px-1">
+                    <div className="flex gap-4 text-[10px] font-mono text-silver-dim uppercase tracking-wider">
+                        <span className="flex items-center gap-1.5"><div className="w-1 h-1 bg-active-green rounded-full"></div> Mainnet</span>
+                        <span className="flex items-center gap-1.5"><div className="w-1 h-1 bg-silver-dim rounded-full"></div> Latency: 12ms</span>
+                    </div>
+                    <div className="text-[10px] text-silver-dim font-display tracking-widest">
+                        PRESS ENTER TO SEND
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 }
 
-// Helper icons needed for this file
-import { Bot, User as UserIcon } from "lucide-react"; 
+
