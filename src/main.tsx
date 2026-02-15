@@ -12,7 +12,7 @@ const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 const queryClient = new QueryClient();
 
 const networks = {
-  devnet: { url: 'https://rpc-devnet.onelabs.cc:443' },
+  devnet: { url: 'https://fullnode.devnet.sui.io:443' },
   mainnet: { url: 'https://rpc-mainnet.onelabs.cc:443' },
 };
 

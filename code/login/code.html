@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monolith Terminal Login Screen</title>
+<meta content="Premium Web3 AI Agent login page in the Monolith style." name="description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-black": "#050505",
+              "surface-zinc": "#111111",
+              "silver-accent": "#E0E0E0",
+              "silver-dim": "#666666",
+              "border-subtle": "#222222",
+              "tech-green": "#00ff41",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "sans": ["Inter", "sans-serif"],
+              "mono": ["Space Grotesk", "monospace"], 
+            },
+            animation: {
+              'spin-slow': 'spin 60s linear infinite',
+              'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            backgroundImage: {
+                'grid-pattern': "linear-gradient(to right, #111 1px, transparent 1px), linear-gradient(to bottom, #111 1px, transparent 1px)",
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 50;
+        }
+        .grid-bg {
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+    </style>
+</head>
+<body class="bg-surface-black text-white font-sans min-h-screen w-full flex flex-col items-center justify-center selection:bg-silver-accent selection:text-black overflow-hidden">
+<div class="noise-overlay"></div>
+<div class="fixed inset-0 z-0 pointer-events-none opacity-20 grid-bg bg-grid-pattern"></div>
+<div class="fixed inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none">
+<div class="relative w-[800px] h-[800px] md:w-[1200px] md:h-[1200px] animate-spin-slow opacity-20">
+<div class="absolute inset-0 border border-white/5 rounded-full transform rotate-45 scale-90"></div>
+<div class="absolute inset-0 border border-white/5 rounded-full transform -rotate-12 scale-75"></div>
+<div class="absolute inset-0 border border-white/10 rounded-full transform rotate-90 scale-50 border-dashed"></div>
+</div>
+</div>
+<nav class="fixed top-0 left-0 w-full z-40 px-6 md:px-12 py-8 flex justify-between items-center">
+<div class="flex items-center gap-3">
+<div class="w-1.5 h-5 bg-white"></div>
+<span class="font-display font-bold tracking-widest text-sm text-white">MONOLITH</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 border border-white/10 bg-white/5 backdrop-blur-sm rounded-full">
+<span class="relative flex h-1.5 w-1.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
+</span>
+<span class="text-[10px] font-mono font-medium text-silver-dim uppercase tracking-wider">Terminal Active</span>
+</div>
+</nav>
+<main class="relative z-10 w-full max-w-md px-6">
+<div class="glass-panel p-1 rounded-sm">
+<div class="bg-surface-black/80 p-8 md:p-10 border border-white/5 rounded-sm flex flex-col items-center text-center">
+<div class="mb-6">
+<span class="material-symbols-outlined text-4xl text-white/80 font-light">fingerprint</span>
+</div>
+<h1 class="font-display text-2xl font-medium tracking-tight text-white mb-2">
+                Identity Verification
+            </h1>
+<p class="text-silver-dim text-xs font-mono tracking-wide mb-10 max-w-[280px]">
+                Connect your wallet to access the Monolith autonomous execution layer.
+            </p>
+<button class="w-full group relative bg-white hover:bg-silver-accent transition-colors py-4 px-6 flex items-center justify-center gap-3 mb-8">
+<span class="font-display font-bold text-black uppercase tracking-[0.15em] text-sm">Connect Wallet</span>
+<span class="material-symbols-outlined text-black text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<div class="w-full border-t border-white/10 relative my-6">
+<span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0a0a0a] px-3 text-[10px] uppercase tracking-widest text-silver-dim font-mono">
+                    Select Provider
+                </span>
+</div>
+<div class="w-full flex flex-col gap-3">
+<button class="flex items-center justify-between w-full p-4 border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all group">
+<div class="flex items-center gap-3">
+<svg class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<path d="M29.9822 13.9875L27.5305 2.50298L16.2736 12.0163L4.99965 2.50298L2.565 13.9875L15.3995 23.4912L15.3967 23.4862L16.2736 29.497L17.1477 23.4889L17.1449 23.4912L29.9822 13.9875Z" fill="#E2761B" stroke="white" stroke-width="0.5"></path>
+<path d="M9.69531 15.6896L16.2713 19.9897L22.8472 15.6896L16.2713 12.0163L9.69531 15.6896Z" fill="#E4761B"></path>
+</svg>
+<span class="text-xs font-mono tracking-wider text-silver-dim group-hover:text-white transition-colors uppercase">Metamask</span>
+</div>
+<div class="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-green-500 transition-colors"></div>
+</button>
+<button class="flex items-center justify-between w-full p-4 border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all group">
+<div class="flex items-center gap-3">
+<svg class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M26.4357 5.76023C26.4357 5.76023 23.1517 11.2338 23.1517 15.8906C23.1517 21.0907 27.5305 26.5642 27.5305 26.5642C27.5305 26.5642 16.5835 29.301 8.37135 26.5642C8.37135 26.5642 9.46605 23.2773 9.46605 20.2696C9.46605 16.7116 5.63458 13.6971 5.63458 9.31758C5.63458 7.12817 6.72929 4.3914 9.19237 3.57033C11.6555 2.74925 14.9405 4.3914 14.9405 4.3914L23.4254 2.20188L26.4357 5.76023Z" fill="#AB9FF2" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M19.3198 12.3286C19.3198 13.8407 18.094 15.0665 16.5819 15.0665C15.0699 15.0665 13.8441 13.8407 13.8441 12.3286C13.8441 10.8165 15.0699 9.59074 16.5819 9.59074C18.094 9.59074 19.3198 10.8165 19.3198 12.3286Z" fill="white" fill-rule="evenodd"></path>
+</svg>
+<span class="text-xs font-mono tracking-wider text-silver-dim group-hover:text-white transition-colors uppercase">Phantom</span>
+</div>
+<div class="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-green-500 transition-colors"></div>
+</button>
+<button class="flex items-center justify-between w-full p-4 border border-white/10 hover:border-white/30 hover:bg-white/5 transition-all group">
+<div class="flex items-center gap-3">
+<svg class="w-5 h-5 opacity-70 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+<rect height="20" rx="4" stroke="white" stroke-width="2" width="20" x="6" y="6"></rect>
+<path d="M11 16H21" stroke="white" stroke-width="2"></path>
+<path d="M16 11V21" stroke="white" stroke-width="2"></path>
+</svg>
+<span class="text-xs font-mono tracking-wider text-silver-dim group-hover:text-white transition-colors uppercase">Ledger</span>
+</div>
+<div class="w-1.5 h-1.5 rounded-full bg-white/10 group-hover:bg-green-500 transition-colors"></div>
+</button>
+</div>
+<div class="mt-8 pt-4 border-t border-white/5 w-full flex justify-between items-center">
+<a class="text-[10px] text-silver-dim/60 hover:text-white transition-colors font-mono uppercase tracking-wider" href="#">Trouble connecting?</a>
+<a class="text-[10px] text-silver-dim/60 hover:text-white transition-colors font-mono uppercase tracking-wider" href="#">Docs</a>
+</div>
+</div>
+</div>
+</main>
+<footer class="fixed bottom-0 left-0 w-full border-t border-white/5 bg-surface-black/95 backdrop-blur-sm z-20">
+<div class="w-full px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-wider text-silver-dim">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+<span>SYSTEM: ONLINE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">dns</span>
+<span>BLOCK HEIGHT: 18,492,024</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">security</span>
+<span>ENCRYPTION: AES-256</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">wifi</span>
+<span>NODES: 42/42</span>
+</div>
+</div>
+</div>
+</footer>
+
+</body></html>

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monolith Security &amp; Gas Settings</title>
+<meta content="Premium Web3 AI Agent platform for on-chain task execution." name="description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-black": "#050505",
+              "surface-zinc": "#111111",
+              "surface-panel": "#0A0A0A",
+              "silver-accent": "#C0C0C0",
+              "silver-dim": "#666666",
+              "border-subtle": "#222222",
+              "accent-lime": "#ccff00", // Cyber Lime
+              "accent-lime-dim": "rgba(204, 255, 0, 0.1)",
+              "accent-red": "#FF3333",
+              "accent-red-dim": "rgba(255, 51, 51, 0.1)",
+              "glow": "rgba(255, 255, 255, 0.05)",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "sans": ["Inter", "sans-serif"],
+            },
+            animation: {
+              'spin-slow': 'spin 60s linear infinite',
+              'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            backgroundImage: {
+              'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 50;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050505; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 6px;
+            background: #ccff00;
+            cursor: pointer;
+            border: 1px solid #000;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(204, 255, 0, 0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #222;
+        }.toggle-checkbox:checked {
+            right: 0;
+            border-color: #ccff00;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #ccff00;
+        }.switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #222;
+            transition: .4s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 2px;
+            bottom: 2px;
+            background-color: #666;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: rgba(204, 255, 0, 0.2);
+            border-color: #ccff00;
+        }
+        input:checked + .slider:before {
+            transform: translateX(16px);
+            background-color: #ccff00;
+            box-shadow: 0 0 8px rgba(204, 255, 0, 0.6);
+        }
+        .panic-switch input:checked + .slider {
+             background-color: rgba(255, 51, 51, 0.2);
+             border-color: #FF3333;
+        }
+        .panic-switch input:checked + .slider:before {
+            background-color: #FF3333;
+            box-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-surface-black text-white font-sans h-screen w-screen overflow-hidden flex flex-col selection:bg-accent-lime selection:text-black">
+<div class="noise-overlay"></div>
+<div class="absolute inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none">
+<div class="absolute -top-[20%] -right-[10%] w-[800px] h-[800px] bg-accent-lime/5 rounded-full blur-[120px] animate-pulse-slow"></div>
+<div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-surface-zinc/30 rounded-full blur-[100px]"></div>
+</div>
+<nav class="fixed top-0 left-0 w-full z-30 h-20 px-8 border-b border-white/5 bg-surface-black/80 backdrop-blur-md flex justify-between items-center">
+<div class="flex items-center gap-12">
+<div class="flex items-center gap-3">
+<div class="w-2 h-8 bg-accent-lime"></div>
+<span class="font-display font-bold tracking-widest text-lg text-white">MONOLITH</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-xs font-display uppercase tracking-widest text-silver-dim hover:text-white transition-colors" href="#">Portfolio</a>
+<a class="text-xs font-display uppercase tracking-widest text-silver-dim hover:text-white transition-colors" href="#">Strategies</a>
+<a class="text-xs font-display uppercase tracking-widest text-silver-dim hover:text-white transition-colors" href="#">Agents</a>
+<a class="text-xs font-display uppercase tracking-widest text-white border-b border-accent-lime pb-1" href="#">Settings</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex flex-col items-end">
+<span class="text-[10px] text-silver-dim tracking-wider uppercase">Security Level</span>
+<span class="font-display font-medium text-accent-lime">HIGH</span>
+</div>
+<div class="h-8 w-px bg-white/10 hidden lg:block"></div>
+<div class="flex items-center gap-3 bg-surface-zinc border border-white/10 rounded-full px-4 py-1.5 hover:border-white/20 transition-colors cursor-pointer">
+<div class="w-2 h-2 rounded-full bg-accent-lime animate-pulse"></div>
+<span class="text-xs font-mono text-silver-accent">0x8a...42F9</span>
+</div>
+</div>
+</nav>
+<main class="relative z-10 w-full h-full pt-20 flex">
+<aside class="w-64 hidden lg:flex flex-col border-r border-white/5 bg-surface-black/50 p-6 gap-8">
+<div>
+<h3 class="text-xs font-display uppercase tracking-widest text-silver-dim mb-4">Configuration</h3>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded bg-white/5 text-white border-l-2 border-accent-lime" href="#">
+<span class="material-symbols-outlined text-sm">security</span>
+<span class="text-sm">Security &amp; Gas</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-silver-dim hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+<span class="text-sm">Wallets</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-silver-dim hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">notifications</span>
+<span class="text-sm">Notifications</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-silver-dim hover:text-white hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">api</span>
+<span class="text-sm">API Access</span>
+</a>
+</div>
+</div>
+<div class="mt-auto">
+<div class="glass-panel p-4 rounded border border-accent-red/20 bg-accent-red-dim/5">
+<div class="flex items-center gap-2 mb-2 text-accent-red">
+<span class="material-symbols-outlined text-sm">warning</span>
+<span class="text-[10px] uppercase tracking-widest font-bold">Alert</span>
+</div>
+<p class="text-xs text-silver-dim leading-relaxed">
+                        Unusual gas spike detected on Ethereum Mainnet. Agent activity paused.
+                    </p>
+</div>
+</div>
+</aside>
+<section class="flex-1 overflow-y-auto p-8">
+<header class="mb-8 flex justify-between items-end">
+<div>
+<h1 class="font-display text-3xl text-white mb-2">Settings &amp; Security</h1>
+<p class="text-silver-dim font-light tracking-wide text-sm">Configure execution parameters and security protocols for autonomous agents.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-white/10 hover:border-white/30 text-xs uppercase tracking-widest text-silver-dim hover:text-white transition-colors">
+                        Audit Log
+                    </button>
+<button class="px-4 py-2 bg-white text-black text-xs uppercase tracking-widest font-bold hover:bg-accent-lime hover:text-black transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-base">save</span>
+                        Save Changes
+                    </button>
+</div>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+<div class="glass-panel p-6 rounded-sm col-span-1 lg:col-span-2 xl:col-span-1 flex flex-col gap-6">
+<div class="flex justify-between items-start border-b border-white/5 pb-4">
+<div>
+<h2 class="text-sm font-display uppercase tracking-widest text-white">Security Protocol</h2>
+<p class="text-[10px] text-silver-dim mt-1">Global security overrides.</p>
+</div>
+<span class="material-symbols-outlined text-silver-dim">lock</span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm text-white">2FA for Withdrawals</div>
+<div class="text-xs text-silver-dim">Require authentication for outgoing assets</div>
+</div>
+<label class="switch">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm text-white">Auto-Lock Session</div>
+<div class="text-xs text-silver-dim">Lock terminal after 15m inactivity</div>
+</div>
+<label class="switch">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<div class="text-sm text-white">IP Whitelisting</div>
+<div class="text-xs text-silver-dim">Restrict access to known IP addresses</div>
+</div>
+<label class="switch">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+<div class="p-4 border border-accent-red/30 bg-surface-black/40 mt-4 relative overflow-hidden">
+<div class="absolute inset-0 bg-accent-red-dim pointer-events-none"></div>
+<div class="flex items-center justify-between relative z-10">
+<div>
+<div class="text-sm text-accent-red font-bold uppercase tracking-wide flex items-center gap-2">
+<span class="material-symbols-outlined text-base">emergency_home</span>
+                            Panic Button
+                        </div>
+<div class="text-xs text-silver-dim mt-1">Immediately pause all active agents</div>
+</div>
+<label class="switch panic-switch">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-sm col-span-1 lg:col-span-2 flex flex-col gap-6">
+<div class="flex justify-between items-start border-b border-white/5 pb-4">
+<div>
+<h2 class="text-sm font-display uppercase tracking-widest text-white">Gas Configuration</h2>
+<p class="text-[10px] text-silver-dim mt-1">Execution cost thresholds.</p>
+</div>
+<span class="material-symbols-outlined text-silver-dim">local_gas_station</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="col-span-1 md:col-span-3">
+<div class="flex justify-between mb-2">
+<span class="text-xs uppercase tracking-wide text-silver-dim">Priority Level</span>
+<span class="text-xs uppercase tracking-wide text-accent-lime">Fast</span>
+</div>
+<div class="flex gap-2 mb-6">
+<button class="flex-1 py-2 border border-white/10 hover:border-white/30 bg-surface-black text-silver-dim text-xs uppercase tracking-widest transition-colors hover:text-white">Standard</button>
+<button class="flex-1 py-2 border border-accent-lime bg-accent-lime/10 text-accent-lime text-xs uppercase tracking-widest font-bold shadow-[0_0_15px_rgba(204,255,0,0.1)]">Fast</button>
+<button class="flex-1 py-2 border border-white/10 hover:border-white/30 bg-surface-black text-silver-dim text-xs uppercase tracking-widest transition-colors hover:text-white">Ultra</button>
+</div>
+</div>
+<div class="col-span-1 md:col-span-3 space-y-8">
+<div>
+<div class="flex justify-between mb-4">
+<span class="text-sm text-white">Max Gwei Limit (ETH)</span>
+<span class="text-sm font-mono text-accent-lime">45 Gwei</span>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="z-20 relative" max="200" min="10" type="range" value="45"/>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 w-full bg-surface-zinc"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-accent-lime w-[22%]"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-silver-dim font-mono">
+<span>10</span>
+<span>200</span>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-4">
+<span class="text-sm text-white">Priority Fee (Tips)</span>
+<span class="text-sm font-mono text-accent-lime">2.5 Gwei</span>
+</div>
+<div class="relative w-full h-6 flex items-center">
+<input class="z-20 relative" max="10" min="0" step="0.1" type="range" value="2.5"/>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 w-full bg-surface-zinc"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-accent-lime w-[25%]"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-silver-dim font-mono">
+<span>0.0</span>
+<span>10.0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel border border-white/5 rounded-sm overflow-hidden mb-8">
+<div class="px-6 py-4 border-b border-white/5 flex justify-between items-center bg-surface-black/40">
+<div>
+<h2 class="text-sm font-display uppercase tracking-widest text-white">Wallet Permissions</h2>
+<p class="text-[10px] text-silver-dim mt-0.5">Manage agent access levels per connected wallet.</p>
+</div>
+<button class="text-xs text-accent-lime hover:text-white border border-accent-lime/30 hover:border-accent-lime px-3 py-1 rounded transition-colors uppercase tracking-wide">
+            Add New Wallet
+        </button>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] uppercase tracking-wider text-silver-dim border-b border-white/5 bg-surface-black/20">
+<th class="px-6 py-4 font-normal">Wallet Alias</th>
+<th class="px-6 py-4 font-normal">Address</th>
+<th class="px-6 py-4 font-normal text-center">Auto-Execution</th>
+<th class="px-6 py-4 font-normal text-center">Withdrawal Rights</th>
+<th class="px-6 py-4 font-normal text-right">Last Active</th>
+<th class="px-6 py-4 font-normal text-right">Action</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="group hover:bg-white/5 transition-colors border-b border-white/5">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-zinc border border-white/10 flex items-center justify-center text-silver-dim">
+<span class="material-symbols-outlined text-sm">wallet</span>
+</div>
+<div class="font-medium text-white">Primary Vault</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-mono text-silver-dim text-xs bg-surface-zinc px-2 py-1 rounded border border-white/5">0x8a...42F9</span>
+</td>
+<td class="px-6 py-4 text-center">
+<label class="switch scale-75">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</td>
+<td class="px-6 py-4 text-center">
+<label class="switch scale-75">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</td>
+<td class="px-6 py-4 text-right text-silver-dim text-xs">
+        2 min ago
+    </td>
+<td class="px-6 py-4 text-right">
+<button class="text-silver-dim hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-white/5 transition-colors border-b border-white/5">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-zinc border border-white/10 flex items-center justify-center text-silver-dim">
+<span class="material-symbols-outlined text-sm">wallet</span>
+</div>
+<div class="font-medium text-white">Trading Alpha</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-mono text-silver-dim text-xs bg-surface-zinc px-2 py-1 rounded border border-white/5">0x4b...91C2</span>
+</td>
+<td class="px-6 py-4 text-center">
+<label class="switch scale-75">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</td>
+<td class="px-6 py-4 text-center">
+<label class="switch scale-75">
+<input checked="" type="checkbox"/>
+<span class="slider"></span>
+</label>
+</td>
+<td class="px-6 py-4 text-right text-silver-dim text-xs">
+        1 hr ago
+    </td>
+<td class="px-6 py-4 text-right">
+<button class="text-silver-dim hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-white/5 transition-colors border-b border-white/5">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-zinc border border-white/10 flex items-center justify-center text-silver-dim">
+<span class="material-symbols-outlined text-sm">savings</span>
+</div>
+<div class="font-medium text-white">Cold Storage Link</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="font-mono text-silver-dim text-xs bg-surface-zinc px-2 py-1 rounded border border-white/5">0x12...FA77</span>
+</td>
+<td class="px-6 py-4 text-center">
+<label class="switch scale-75">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</td>
+<td class="px-6 py-4 text-center">
+<label class="switch scale-75">
+<input type="checkbox"/>
+<span class="slider"></span>
+</label>
+</td>
+<td class="px-6 py-4 text-right text-silver-dim text-xs">
+        14 days ago
+    </td>
+<td class="px-6 py-4 text-right">
+<button class="text-silver-dim hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">settings</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<footer class="fixed bottom-0 left-0 w-full z-20 px-8 py-2 bg-surface-black/90 border-t border-white/5">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] tracking-wide text-silver-dim font-sans h-full">
+<div class="flex gap-2 items-center">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-lime animate-pulse"></span>
+<span>SYSTEM SECURE</span>
+<span class="mx-2 text-white/10">|</span>
+<span>LATEST BLOCK: 18459203</span>
+</div>
+<div class="opacity-50">
+                ENCRYPTED SESSION ID: <span class="font-mono text-white">8F3-A29-X01</span>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Narrative Intelligence Landing v3</title>
+<meta content="Premium Web3 AI Agent landing page in a cinematic, long-form narrative style." name="description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-black": "#050505",
+              "surface-zinc": "#111111",
+              "silver-accent": "#E0E0E0",
+              "silver-dim": "#666666",
+              "border-subtle": "#222222",
+              "tech-green": "#00ff41",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"],
+              "sans": ["Inter", "sans-serif"],
+              "mono": ["Space Grotesk", "monospace"], // Using Space Grotesk for mono feel or default mono
+            },
+            animation: {
+              'spin-slow': 'spin 60s linear infinite',
+              'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'cursor': 'cursor .75s step-end infinite',
+              'scan': 'scan 3s linear infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              cursor: {
+                '0%, 100%': { opacity: '1' },
+                '50%': { opacity: '0' },
+              },
+              scan: {
+                '0%': { transform: 'translateY(-100%)' },
+                '100%': { transform: 'translateY(100%)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .abstract-shape {
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 70%);
+            box-shadow: inset 0 0 100px #000000;
+        }
+        .glass-panel {
+            background: rgba(10, 10, 10, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            z-index: 50;
+        }
+        .terminal-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .terminal-scroll::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .terminal-scroll::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 2px;
+        }
+        .step-line {
+            position: absolute;
+            left: 2rem;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0.2) 80%, transparent);
+        }
+        @media (min-width: 768px) {
+            .step-line {
+                left: 50%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-surface-black text-white font-sans min-h-screen w-full flex flex-col items-center selection:bg-silver-accent selection:text-black overflow-x-hidden">
+<div class="noise-overlay"></div>
+<div class="fixed inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none">
+<div class="relative w-[800px] h-[800px] md:w-[1400px] md:h-[1400px] animate-spin-slow opacity-30">
+<div class="absolute inset-0 border border-white/5 rounded-full transform rotate-45 scale-90"></div>
+<div class="absolute inset-0 border border-white/5 rounded-full transform -rotate-12 scale-75"></div>
+<div class="absolute inset-0 border border-white/10 rounded-full transform rotate-90 scale-50 border-dashed"></div>
+</div>
+</div>
+<nav class="fixed top-0 left-0 w-full z-40 px-6 md:px-12 py-6 flex justify-between items-center border-b border-white/5 bg-surface-black/80 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="w-2 h-6 bg-white"></div>
+<span class="font-display font-bold tracking-widest text-base text-white">MONOLITH</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[10px] font-display font-medium tracking-[0.2em] text-silver-dim hover:text-white transition-colors uppercase" href="#">Intelligence</a>
+<a class="text-[10px] font-display font-medium tracking-[0.2em] text-silver-dim hover:text-white transition-colors uppercase" href="#">Network</a>
+<a class="text-[10px] font-display font-medium tracking-[0.2em] text-silver-dim hover:text-white transition-colors uppercase" href="#">Protocol</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="group border border-white/20 px-6 py-2 text-[10px] font-display font-bold uppercase tracking-[0.15em] bg-white/5 hover:bg-white hover:text-black transition-all">
+            Initialize
+        </button>
+</div>
+</nav>
+<main class="relative z-10 w-full flex flex-col items-center pt-32 md:pt-48 pb-20 px-6">
+<div class="w-full max-w-5xl flex flex-col items-center text-center mb-32 md:mb-48">
+<div class="mb-8 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+</span>
+<span class="text-[10px] font-bold uppercase tracking-[0.2em] text-silver-dim">Autonomous Grid Active</span>
+</div>
+<h1 class="font-display text-5xl md:text-8xl font-medium tracking-tighter text-white mb-8 leading-[0.9]">
+            Command<br/><span class="text-silver-dim/50">Your Chain.</span>
+</h1>
+<p class="text-silver-dim text-sm md:text-base font-light tracking-wide max-w-xl mb-12 leading-relaxed">
+            The autonomous intelligence layer for high-precision Web3 tasks. Execute complex strategies with singular intent and mathematical perfection.
+        </p>
+<div class="w-full max-w-3xl glass-panel p-1 rounded-sm shadow-2xl animate-float">
+<div class="bg-surface-black/95 p-6 border border-white/5 rounded-sm h-[360px] flex flex-col text-left relative overflow-hidden">
+<div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-5 pointer-events-none"></div>
+<div class="flex justify-between items-center mb-4 pb-4 border-b border-white/5 z-10">
+<div class="flex gap-2">
+<div class="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-white/20"></div>
+</div>
+<div class="text-[10px] font-mono text-silver-dim uppercase tracking-widest">root@monolith: ~</div>
+</div>
+<div class="flex-1 font-mono text-xs md:text-sm space-y-3 overflow-y-auto terminal-scroll text-silver-dim z-10 font-light">
+<div class="flex gap-3">
+<span class="text-green-500">➜</span>
+<span class="text-white">init_sequence --mode=autonomous</span>
+</div>
+<div class="pl-6 text-silver-dim opacity-70 border-l border-white/10 ml-1.5">
+                        [OK] Core logic loaded.<br/>
+                        [OK] Neural engine connected to mainnet.
+                    </div>
+<div class="flex gap-3 pt-2">
+<span class="text-green-500">➜</span>
+<span class="text-white">scan_opportunities --depth=full</span>
+</div>
+<div class="pl-6 text-silver-dim opacity-70 border-l border-white/10 ml-1.5">
+                        [SCANNING] eth_mainnet block 18492021...<br/>
+                        [FOUND] Arb opportunity detected (confidence: 98.4%)<br/>
+                        [CALC] Estimated yield: 0.45 ETH
+                    </div>
+<div class="flex gap-3 pt-2">
+<span class="text-green-500">➜</span>
+<span class="text-white">execute_flash --gas=optimal</span>
+</div>
+<div class="pl-6 text-silver-dim opacity-70 border-l border-white/10 ml-1.5">
+                         [TX] Transaction broadcast: 0x8a9...c4b<br/>
+                         [SUCCESS] Block included.
+                    </div>
+<div class="flex gap-3 pt-2">
+<span class="text-green-500">➜</span>
+<span class="text-white">awaiting_input<span class="animate-cursor inline-block w-2 h-4 bg-white align-middle ml-1"></span></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-full max-w-6xl mx-auto py-20 flex flex-col gap-32 md:gap-48">
+<div class="hidden md:block step-line"></div>
+<div class="relative flex flex-col md:flex-row items-center gap-12 md:gap-24">
+<div class="md:w-1/2 flex justify-center md:justify-end order-2 md:order-1">
+<div class="relative w-full max-w-sm aspect-square bg-surface-zinc/30 border border-white/10 rounded-sm p-8 flex flex-col items-center justify-center overflow-hidden group hover:border-white/30 transition-all duration-500">
+<div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="relative z-10 w-full h-full border border-white/5 rounded-sm p-4 flex flex-col gap-2">
+<div class="flex justify-between items-center text-[10px] text-silver-dim uppercase tracking-widest border-b border-white/5 pb-2 mb-2">
+<span>Analysis Module</span>
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+</div>
+<div class="flex-1 flex items-center justify-center gap-4">
+<div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center relative">
+<span class="material-symbols-outlined text-white/50 text-2xl">hub</span>
+<div class="absolute inset-0 border border-white/40 rounded-full animate-ping opacity-20"></div>
+</div>
+<div class="h-px w-12 bg-white/20"></div>
+<div class="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
+<span class="material-symbols-outlined text-white text-2xl">token</span>
+</div>
+</div>
+<div class="mt-auto grid grid-cols-3 gap-2">
+<div class="h-1 bg-white/20 rounded-full"></div>
+<div class="h-1 bg-white/10 rounded-full"></div>
+<div class="h-1 bg-white/5 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="md:w-1/2 text-left order-1 md:order-2 pl-8 border-l border-white/10 md:border-l-0">
+<div class="text-[10px] font-mono text-green-500 uppercase tracking-widest mb-4">Step 01</div>
+<h2 class="font-display text-3xl md:text-5xl font-bold text-white mb-6">Multi-chain Analysis</h2>
+<p class="text-silver-dim text-sm leading-relaxed max-w-md">
+                    Our sentinel nodes continuously monitor mempools across 12+ EVM chains. By analyzing liquidity depth and volatility in real-time, the system identifies profitable execution paths before they become public.
+                </p>
+<div class="mt-8 flex gap-4">
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-silver-dim/80">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span>Mem-pool scanning</span>
+</div>
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-silver-dim/80">
+<span class="material-symbols-outlined text-sm">speed</span>
+<span>&lt;10ms Latency</span>
+</div>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col md:flex-row items-center gap-12 md:gap-24">
+<div class="md:w-1/2 text-left pl-8 border-l border-white/10 md:border-l-0 md:text-right md:pr-8">
+<div class="text-[10px] font-mono text-green-500 uppercase tracking-widest mb-4">Step 02</div>
+<h2 class="font-display text-3xl md:text-5xl font-bold text-white mb-6">Flash Execution</h2>
+<p class="text-silver-dim text-sm leading-relaxed max-w-md ml-auto">
+                    Once a path is confirmed, the AI constructs and signs the transaction bundle instantly. Utilizing Flashbots and private RPCs, we bypass public mempool predation, ensuring your transaction is mined exactly as intended.
+                </p>
+<div class="mt-8 flex gap-4 md:justify-end">
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-silver-dim/80">
+<span class="material-symbols-outlined text-sm">flash_on</span>
+<span>MEV Protection</span>
+</div>
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-silver-dim/80">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>Private RPC</span>
+</div>
+</div>
+</div>
+<div class="md:w-1/2 flex justify-center md:justify-start">
+<div class="relative w-full max-w-sm aspect-square bg-surface-zinc/30 border border-white/10 rounded-sm p-8 flex flex-col items-center justify-center overflow-hidden group hover:border-white/30 transition-all duration-500">
+<div class="absolute inset-0 bg-gradient-to-bl from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="relative z-10 w-full bg-surface-black border border-white/10 p-4 font-mono text-[10px] leading-relaxed text-silver-dim shadow-2xl">
+<div class="flex items-center gap-2 mb-3 border-b border-white/5 pb-2">
+<span class="material-symbols-outlined text-green-500 text-sm">code</span>
+<span class="uppercase tracking-wider text-white">Execution_Block</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between">
+<span>Function:</span>
+<span class="text-white">swapExactTokens</span>
+</div>
+<div class="flex justify-between">
+<span>Path:</span>
+<span class="text-white">[USDC, WETH, WBTC]</span>
+</div>
+<div class="flex justify-between">
+<span>Gas Price:</span>
+<span class="text-green-400">24 gwei</span>
+</div>
+<div class="flex justify-between">
+<span>Slippage:</span>
+<span class="text-red-400">0.5%</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-white/5 flex justify-between items-center">
+<span class="text-white/40">Status</span>
+<span class="bg-green-900/20 text-green-400 px-2 py-0.5 rounded text-[9px] uppercase border border-green-900/30">Confirmed</span>
+</div>
+<div class="absolute top-0 left-0 w-full h-1 bg-green-500 animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative flex flex-col md:flex-row items-center gap-12 md:gap-24">
+<div class="md:w-1/2 flex justify-center md:justify-end order-2 md:order-1">
+<div class="relative w-full max-w-sm aspect-square bg-surface-zinc/30 border border-white/10 rounded-sm p-8 flex flex-col items-center justify-center overflow-hidden group hover:border-white/30 transition-all duration-500">
+<div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-32 h-32 rounded-full border border-white/10 flex items-center justify-center relative">
+<div class="absolute inset-0 rounded-full border border-green-500/20 border-t-green-500 animate-spin"></div>
+<span class="material-symbols-outlined text-white text-4xl">verified_user</span>
+</div>
+<div class="mt-6 text-center">
+<div class="text-2xl font-display font-bold text-white tracking-widest">SETTLED</div>
+<div class="text-[10px] font-mono text-silver-dim mt-1">BLOCK #18239402</div>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between text-[9px] uppercase tracking-widest text-silver-dim/50 font-mono">
+<span>Hash: 0x8a...3f</span>
+<span>Time: 0.4s</span>
+</div>
+</div>
+</div>
+<div class="md:w-1/2 text-left order-1 md:order-2 pl-8 border-l border-white/10 md:border-l-0">
+<div class="text-[10px] font-mono text-green-500 uppercase tracking-widest mb-4">Step 03</div>
+<h2 class="font-display text-3xl md:text-5xl font-bold text-white mb-6">Verified Settlement</h2>
+<p class="text-silver-dim text-sm leading-relaxed max-w-md">
+                    Execution is only the beginning. The system verifies finality across all involved chains, ensuring assets are settled securely in your wallet. Real-time notifications confirm the outcome of every automated action.
+                </p>
+<div class="mt-8 flex gap-4">
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-silver-dim/80">
+<span class="material-symbols-outlined text-sm">receipt_long</span>
+<span>On-chain Proof</span>
+</div>
+<div class="flex items-center gap-2 text-[10px] uppercase tracking-widest text-silver-dim/80">
+<span class="material-symbols-outlined text-sm">notifications_active</span>
+<span>Instant Alerts</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full max-w-4xl py-24 text-center">
+<h2 class="font-display text-4xl font-medium text-white mb-8">Ready to deploy?</h2>
+<button class="bg-white text-black px-12 py-4 text-sm font-display font-bold uppercase tracking-[0.2em] hover:bg-silver-accent transition-colors">
+            Initialize Agent
+        </button>
+</div>
+</main>
+<footer class="w-full border-t border-white/5 bg-surface-black/95 backdrop-blur-sm z-20 sticky bottom-0">
+<div class="w-full px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono tracking-wider text-silver-dim">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+<span>SYSTEM: ONLINE</span>
+</div>
+<div class="hidden md:flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">dns</span>
+<span>ETH BLOCK: 18,492,024</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">speed</span>
+<span>LATENCY: 12ms</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[12px]">wifi</span>
+<span>NODES: 42/42</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

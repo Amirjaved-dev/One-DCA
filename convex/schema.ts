@@ -52,10 +52,31 @@ export default defineSchema({
 
     // Agent activity logs
     agentLogs: defineTable({
-        userId: v.id("users"), // Can be null if system action? No, always tied to user context ideally
-        action: v.string(),
-        details: v.optional(v.string()),
-        status: v.string(), // "success", "error"
+        userId: v.optional(v.id("users")), // Optional for system-wide actions
+        type: v.string(), // "PAUSE", "BUY", "INFO", "RISK_ASSESSMENT"
+        message: v.string(),
+        data: v.optional(v.any()), // Store full JSON reasoning/context
         createdAt: v.number(),
+    }).index("by_userId", ["userId"]),
+
+    // Market Sentiment (Agent Memory)
+    marketSentiment: defineTable({
+        tokenSymbol: v.string(),
+        riskScore: v.number(), // 1-10
+        summary: v.string(),
+        sourceUrls: v.array(v.string()),
+        analyzedAt: v.number(),
+    }).index("by_token", ["tokenSymbol"]),
+
+    // Chat messages
+    messages: defineTable({
+        userId: v.string(), // We'll use a string for now until we have robust auth
+        body: v.string(),
+        role: v.string(), // "user" | "assistant"
+        intent: v.optional(v.object({
+            type: v.string(), // "confirm_investment"
+            data: v.any(),
+        })),
+        timestamp: v.number(),
     }).index("by_userId", ["userId"]),
 });
